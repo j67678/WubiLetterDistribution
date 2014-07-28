@@ -6,6 +6,7 @@ import sys
 
 textfilename = 'text.txt'
 
+
 def main(dictfilename):
 
     lookupdict = {}
@@ -20,7 +21,9 @@ def main(dictfilename):
                 lookupdict[line[0]] = line[1]
 
     with open(textfilename, 'r', encoding='utf-8') as textfile:
-        imecode = ''.join((lookupdict.get(word, '') for line in textfile for word in line))
+        imecode = ''.join(
+            (lookupdict.get(word, '') for line in textfile for word in line)
+        )
 
     counts = collections.Counter(imecode)
     print('Statistics:')
