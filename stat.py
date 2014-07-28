@@ -32,7 +32,7 @@ def main(dictfilename):
         if not i.isalpha():
             del counts[i]
     for i in string.ascii_lowercase:
-        counts[i] += 0
+        counts[i] = counts[i]  # If a key is not used, give it zero
     total = sum(counts.values())
     for key, freq in counts.most_common():
         print('%s\t%.3f%%' % (key.upper(), 100*freq/total))
