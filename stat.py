@@ -9,7 +9,7 @@ textfilename = 'text.txt'
 def main(dictfilename):
 
     lookupdict = {}
-    with open(dictfilename, 'r') as dictfile:
+    with open(dictfilename, 'r', encoding='utf-8') as dictfile:
         for line in dictfile:
             line = line.split()
             if line[0] not in lookupdict:
