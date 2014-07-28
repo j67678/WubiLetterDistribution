@@ -20,7 +20,7 @@ def main(dictfilename):
                 lookupdict[line[0]] = line[1]
 
     with open(textfilename, 'r', encoding='utf-8') as textfile:
-        imecode = '\n'.join(map(lambda line: ' '.join(map(lambda word: lookupdict.get(word, ''), line)), textfile))
+        imecode = ''.join((lookupdict.get(word, '') for line in textfile for word in line))
 
     counts = collections.Counter(imecode)
     print('Statistics:')
