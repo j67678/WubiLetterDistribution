@@ -22,15 +22,12 @@ def main(dictfilename):
 
     with open(textfilename, 'r', encoding='utf-8') as textfile:
         imecode = ''.join(
-            (lookupdict.get(word, '') for line in textfile for word in line)
+            (lookupdict.get(word, '') for word in textfile.read())
         )
 
     counts = collections.Counter(imecode)
     print('Statistics:')
     print('Dictinary: %s' % dictfilename)
-    for i in list(counts.keys()):
-        if not i.isalpha():
-            del counts[i]
     for i in string.ascii_lowercase:
         counts[i] = counts[i]  # If a key is not used, give it zero
     total = sum(counts.values())
