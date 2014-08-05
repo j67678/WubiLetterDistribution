@@ -1,54 +1,42 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+
+import collections
+import string
+import sys
 
 textfilename = 'text.txt'
-wubi = True
-wubi = False
 
-print 'Wubi stats:' if wubi else 'Pinyin stats:'
 
-dictfilename = 'wubi86.dict.txt' if wubi else 'pinyin_simp.dict.txt'
-import csv
-with open(dictfilename) as csvfile:
-    spamreader = csv.reader(csvfile, delimiter='\t')
+def main(dictfilename):
+
     lookupdict = {}
-    for row in spamreader:
-        if row[0] in lookupdict:
-            #in rare cases, such as '绿'
-            #will have two or more records in dict file
-            #the later code 'lu' will replace 'lv'
-            #ignore later one
-            continue 
-        lookupdict[row[0]] = row[1]
+    with open(dictfilename, 'r', encoding='utf-8') as dictfile:
+        for line in dictfile:
+            line = line.split()
+            if line[0] not in lookupdict:
+                # in rare cases, such as '绿'
+                # will have two or more records in dict file
+                # the later code 'lu' will replace 'lv'
+                # ignore the later one
+                lookupdict[line[0]] = line[1]
 
-import string
-result = {}
-for letter in string.lowercase:
-    result[letter] = 0
+    with open(textfilename, 'r', encoding='utf-8') as textfile:
+        imecode = ''.join(
+            (lookupdict.get(word, '') for word in textfile.read())
+        )
 
-textfile = open(textfilename)
-text = textfile.read()
-text = unicode(text, 'utf-8')
-textwordcount = 0
-for char in text:
-    char = char.encode('utf-8')
-    if char not in lookupdict:
-        continue;
-    textwordcount += 1
-    code = lookupdict[char]
-    for codeletter in code:
-        result[codeletter] += 1
+    counts = collections.Counter(imecode)
+    print('Statistics:')
+    print('Dictinary: %s' % dictfilename)
+    for i in string.ascii_lowercase:
+        counts[i] = counts[i]  # If a key is not used, give it zero
+    total = sum(counts.values())
+    for key, freq in counts.most_common():
+        print('%s\t%.3f%%' % (key.upper(), 100*freq/total))
 
-print 'words: ' + str(textwordcount)
 
-total = 0
-for letter in result:
-    total += result[letter]
-total = float(total)
-
-stat = {}
-for letter, count in result.items():
-    stat[letter.upper()] = count / total * 100;
-
-letterDescList = sorted(stat, key = stat.get, reverse = True)
-for letter in letterDescList:
-    print letter + '\t' + '%.3f%%' % (stat[letter])
+if __name__ == '__main__':
+    try:
+        main(sys.argv[1])
+    except IndexError:
+        main('wubi86.dict.txt')
