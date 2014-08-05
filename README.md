@@ -19,8 +19,8 @@ WubiLetterDistribution
 Output
 ---
 ####Using Wubi
-	Wubi stats:
-	words: 182387
+	Statistics:
+	Dictinary: wubi86.dict.txt
 	G	6.857%
 	F	6.699%
 	T	6.476%
@@ -49,8 +49,8 @@ Output
 	Z	0.000%
 
 ####Using Pinyin
-	Pinyin stats:
-	words: 182385
+	Statistics:
+	Dictinary: pinyin_simp.dict.txt
 	I	13.352%
 	N	11.770%
 	A	10.203%
